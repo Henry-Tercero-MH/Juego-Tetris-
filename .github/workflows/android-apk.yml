@@ -30,7 +30,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-          cache: gradle
 
       - name: Instalar dependencias
         run: npm ci
@@ -43,6 +42,9 @@ jobs:
 
       - name: Generar proyecto nativo de Android
         run: npx expo prebuild --platform android --no-install
+
+      # El caché de Gradle se activa aquí porque la carpeta android/ recién existe tras el prebuild.
+      - uses: gradle/actions/setup-gradle@v4
 
       - name: Compilar APK
         working-directory: android
