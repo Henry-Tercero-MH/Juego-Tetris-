@@ -21,7 +21,15 @@
       "package": "com.juegotetris.app"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "single",
+      "name": "Tetris",
+      "shortName": "Tetris",
+      "themeColor": "#0B0E1A",
+      "backgroundColor": "#0B0E1A"
+    },
+    "experiments": {
+      "baseUrl": "/Juego-Tetris-"
     }
   }
 }

@@ -53,7 +53,24 @@ npm start
 
 Aparece un código QR en la terminal: escanéalo con Expo Go (Android) o con la cámara (iPhone). El teléfono y la computadora deben estar en la misma red Wi-Fi (o usa `npx expo start --tunnel`).
 
-### Instalar en el teléfono SIN computadora (recomendado)
+### 🍎 iPhone: versión web instalable (sin computadora)
+Apple no permite instalar apps fuera del App Store sin una cuenta de desarrollador (USD 99/año). Por eso el juego también se publica como **web app** en GitHub Pages (`.github/workflows/web.yml`), que en iPhone se comporta como una app:
+
+1. Abre en **Safari**: **https://henry-tercero-mh.github.io/Juego-Tetris-/**
+2. Toca el botón **Compartir** (cuadro con flecha ↑).
+3. Elige **"Agregar a pantalla de inicio"** → **Agregar**.
+4. Abre **Tetris** desde el ícono: se ve en pantalla completa, sin barras del navegador.
+
+Archivos que lo hacen posible:
+- `public/index.html` — plantilla HTML: bloquea el zoom y el "rebote" de iOS (para que los gestos no muevan la página) y declara las etiquetas `apple-mobile-web-app-*`.
+- `public/manifest.json` y los íconos `public/*.png` — nombre e ícono al instalarla.
+- `app.json` → `web.output: "single"` y `experiments.baseUrl: "/Juego-Tetris-"` (la ruta donde vive en GitHub Pages).
+
+> **Configuración única:** en GitHub, *Settings → Pages → Build and deployment → Source* debe estar en **GitHub Actions**.
+
+Para probar la versión web localmente: `npm run build:web` (genera la carpeta `dist/`).
+
+### 🤖 Android: instalar el APK sin computadora
 El repositorio compila el APK solo, con **GitHub Actions** (`.github/workflows/android-apk.yml`), cada vez que se sube un cambio a `main`.
 
 1. Desde el navegador del teléfono abre:
@@ -88,7 +105,8 @@ npm run lint        # estilo
 ```
 Juego-Tetris-/
 ├── .github/workflows/
-│   └── android-apk.yml         ← Compila el APK automáticamente en GitHub
+│   ├── android-apk.yml         ← Compila el APK automáticamente en GitHub
+│   └── web.yml                 ← Publica la versión web en GitHub Pages
 ├── .claude/
 │   ├── agents/                 ← Agentes especializados de Claude Code (sección 14)
 │   │   ├── arquitecto.md
@@ -99,6 +117,7 @@ Juego-Tetris-/
 │   │   └── documentador.md
 │   └── settings.json           ← Activa el plugin oficial de Expo para Claude Code
 ├── assets/                     ← Íconos y splash de la app
+├── public/                     ← Plantilla HTML, manifest e íconos de la versión web (iPhone)
 ├── docs/
 │   └── TUTORIAL.md             ← Este documento
 ├── src/
@@ -492,6 +511,8 @@ Además, `CLAUDE.md` da a Claude el resumen del proyecto en cada sesión, y `AGE
 | `tsconfig.json` | TypeScript estricto + alias `@/*` → `src/*`. |
 | `eslint.config.js` | Reglas de Expo (incluye las reglas de Hooks de React). |
 | `.github/workflows/android-apk.yml` | Revisa calidad, compila el APK y lo publica en Releases en cada push a `main`. |
+| `.github/workflows/web.yml` | Revisa calidad, exporta la versión web y la publica en GitHub Pages. |
+| `public/` | Plantilla `index.html`, `manifest.json` e íconos para instalar la web app en iPhone. |
 | `.gitignore` | Excluye `node_modules`, `.expo`, carpetas nativas generadas. |
 | `.claude/settings.json` | Activa el plugin oficial de Expo para Claude Code. |
 
