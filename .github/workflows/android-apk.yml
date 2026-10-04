@@ -1,0 +1,63 @@
+# Compila el APK de Android en GitHub (sin computadora ni cuenta de Expo)
+# y lo publica en "Releases" para descargarlo desde el teléfono.
+name: Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Revisar calidad (lint, tipos, pruebas)
+        run: |
+          npm run lint
+          npm run typecheck
+          npm test -- --ci
+
+      - name: Generar proyecto nativo de Android
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Compilar APK
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Renombrar APK
+        run: cp android/app/build/outputs/apk/release/app-release.apk tetris.apk
+
+      - name: Publicar en Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Tetris v1.0.${{ github.run_number }}
+          body: |
+            📱 Descarga **tetris.apk** desde el teléfono e instálalo.
+            Compilado desde el commit ${{ github.sha }}.
+          files: tetris.apk
+          make_latest: true

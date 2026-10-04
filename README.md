@@ -4,7 +4,11 @@ Juego de Tetris para Android/iOS hecho con **React Native**, **Expo** y **TypeSc
 
 ![Expo SDK](https://img.shields.io/badge/Expo-SDK%2057-000?logo=expo) ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript)
 
-## Ejecutar
+## 📱 Instalar en Android
+
+Descarga desde el teléfono: **[tetris.apk](https://github.com/Henry-Tercero-MH/Juego-Tetris-/releases/latest/download/tetris.apk)** (se compila solo con GitHub Actions en cada cambio).
+
+## Ejecutar en desarrollo
 
 ```bash
 npm install

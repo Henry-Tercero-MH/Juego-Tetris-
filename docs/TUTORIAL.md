@@ -53,14 +53,25 @@ npm start
 
 Aparece un código QR en la terminal: escanéalo con Expo Go (Android) o con la cámara (iPhone). El teléfono y la computadora deben estar en la misma red Wi-Fi (o usa `npx expo start --tunnel`).
 
-### Generar un APK instalable (sin computadora potente)
-Con una cuenta gratuita de Expo puedes compilar en la nube:
+### Instalar en el teléfono SIN computadora (recomendado)
+El repositorio compila el APK solo, con **GitHub Actions** (`.github/workflows/android-apk.yml`), cada vez que se sube un cambio a `main`.
+
+1. Desde el navegador del teléfono abre:
+   **https://github.com/Henry-Tercero-MH/Juego-Tetris-/releases/latest/download/tetris.apk**
+2. Descarga el archivo y ábrelo. Android pedirá permitir "instalar apps de origen desconocido" para el navegador: acéptalo.
+3. ¡Listo! Aparece el ícono **Tetris**.
+
+Para ver si la compilación terminó (tarda ~10–15 min): pestaña **Actions** del repositorio. Para recompilar sin cambios: Actions → *Android APK* → **Run workflow**.
+
+> El APK está firmado con una clave de depuración: sirve para instalarlo tú, no para publicarlo en Play Store. Al instalar una versión nueva, Android la actualiza encima de la anterior.
+
+### Generar un APK con EAS (alternativa con cuenta de Expo)
 
 ```bash
 npx eas-cli@latest build --platform android --profile preview
 ```
 
-Al terminar, EAS te da un enlace para descargar el `.apk` directamente en el teléfono.
+Al terminar, EAS te da un enlace para descargar el `.apk`.
 
 ### Comandos de calidad
 
@@ -76,6 +87,8 @@ npm run lint        # estilo
 
 ```
 Juego-Tetris-/
+├── .github/workflows/
+│   └── android-apk.yml         ← Compila el APK automáticamente en GitHub
 ├── .claude/
 │   ├── agents/                 ← Agentes especializados de Claude Code (sección 14)
 │   │   ├── arquitecto.md
@@ -478,6 +491,7 @@ Además, `CLAUDE.md` da a Claude el resumen del proyecto en cada sesión, y `AGE
 | `eas.json` | Perfiles de compilación en la nube (EAS). `preview` genera un `.apk` instalable. |
 | `tsconfig.json` | TypeScript estricto + alias `@/*` → `src/*`. |
 | `eslint.config.js` | Reglas de Expo (incluye las reglas de Hooks de React). |
+| `.github/workflows/android-apk.yml` | Revisa calidad, compila el APK y lo publica en Releases en cada push a `main`. |
 | `.gitignore` | Excluye `node_modules`, `.expo`, carpetas nativas generadas. |
 | `.claude/settings.json` | Activa el plugin oficial de Expo para Claude Code. |
 
